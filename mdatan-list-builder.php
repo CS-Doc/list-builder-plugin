@@ -19,9 +19,11 @@ Text-Domain: mdatan-list-builder
 /*
 	
 	1. HOOKS
+        1.1 - registers all our custom shortcodes
 	
 	2. SHORTCODES
-        2.1 - mlb_form_shortcode()
+        2.1 - mlb_register_shortcodes()
+        2.2 - mlb_form_shortcode()
 		
 	3. FILTERS
 		
@@ -46,16 +48,23 @@ Text-Domain: mdatan-list-builder
 
 /* !1. HOOKS */
 
+// 1.1
+//hint: registers all our custom shortcodes on init
+add_action('init', 'mlb_register_shortcodes');
 
 
 
 /* !2. SHORTCODES */
 
+/* !2.1 SHORTCODES */
+
+//hint: registers all our custom shortcodes
 function mlb_register_shortcodes() {
-  add_shortcode(string $tag, callback $func)    
+  add_shortcode('mlb_form', 'mlb_form_shortcode');
 }
 
-//2.1
+//2.2
+//hint: returns a html string for an email capture form
 function mlb_form_shortcode( $args, $content="" ) {
     
     //setup our output variable - the form html
@@ -81,7 +90,8 @@ function mlb_form_shortcode( $args, $content="" ) {
             </p>';
     //including content in our form html if content is passed into the function
     if( strlen($content) ):
-       $output .= '<div class="mlb-content">' wpautop($content) .'</div>';
+
+       $output .= '<div class="mlb-content">'. wpautop($content) .'</div>';
     endif;
     
     //completing our form html
